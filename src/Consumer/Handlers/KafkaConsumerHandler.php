@@ -14,6 +14,7 @@ use RdKafka\KafkaConsumer;
 use RdKafka\Message;
 use RdKafka\TopicPartition;
 use Nirmalsharma\LaravelKafkaPhp\KafkaException\KafkaException;
+use Nirmalsharma\LaravelKafkaPhp\Producer\Services\Kafka as KafkaProducer;
 
 class KafkaConsumerHandler {
 
@@ -132,11 +133,20 @@ class KafkaConsumerHandler {
             }
             catch(KafkaException $e){
                 dump($e->getMessage(), $decoded_message);
+                $this->sendToDlq($e->getMessage(), $decoded_message);
             }
             catch(Exception $e){
-                // Todo
-                dump($e->getMessage());
+                Log::debug("CriticalError", [$e->getMessage()]);
             }
         }
+    }
+
+    public function sendToDlq($error_message, $original_message){
+        $topic = 'loan-service-dlq';
+        $event_body = $original_message['data'];
+        $event_key = $original_message['key'];
+        $headers = $original_message['headers'];
+        $headers['Error-Reason'] = $error_message;
+        KafkaProducer::push($topic, $event_body, $event_key, $headers);
     }
 }
