@@ -2,8 +2,8 @@
 namespace App\Classes;
 
 use Carbon\Carbon;
-use Nirmalsharma\LaravelKafkaPhp\Producer\Services\KafkaProducer;
-// use KafkaProducer;
+// use Nirmalsharma\LaravelKafkaPhp\Producer\Services\KafkaProducer;
+use KafkaProducer;
 
 abstract class KafkaProducerEvent {
 

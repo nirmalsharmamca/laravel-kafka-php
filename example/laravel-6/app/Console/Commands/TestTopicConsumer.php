@@ -12,8 +12,8 @@ class TestTopicConsumer extends Command
 {
     /**
      * command example:
-     *
-     *  php artisan kafka:test-consume --consumer-group=test-local --topic=multi-parition-test --dlq-topic=loan-service-dlq
+     * php artisan kafka:test-consume --consumer-group=test-local --topic=test --dlq-topic=test-dlq
+     *  
      */
     protected $signature = 'kafka:test-consume {--partition=} {--consumer-group=} {--topic=} {--dlq-topic=}';
 
@@ -23,15 +23,6 @@ class TestTopicConsumer extends Command
     {
         $this->setKafkaConfig();
         KafkaConsumer::createConsumer( new TestHandler);
-        
-        // $consumer = Kafka::createConsumer()
-        //     ->subscribe('user-attributes')
-        //     ->withHandler(new TestHandler)
-        //     // ->withAutoCommit()
-        //     // ->withConsumerGroupId('test-consumer')
-        //     ->build();
-
-        // $consumer->consume();
     }
 
     public function setKafkaConfig(){
