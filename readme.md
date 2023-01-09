@@ -11,7 +11,7 @@ Install Kafka Warpper
 [Laravel 6](examples/laravel-6-example)
 
 
-## Use Kafka in code.
+## Use Kafka producer in code.
 
 Add following in web.php
 
@@ -32,7 +32,7 @@ Kafka::push($topic, $data, $key, $headers);
 
 ```
 
-## Use Kafka in code.
+## Use Kafka consumer in code.
 
 Sample code for console
 
@@ -111,7 +111,7 @@ class TestHandler
   php artisan kafka:test-consume --consumer-group=test-local --topic=demo-topic --dlq-topic=demo-dlq
 ```
 
-## You can check handler log message in "storage/logs/laravel.log" file or run the following command in your terminal:
+## You can use KafkaConsumerException during business logic or in handler to send message forcefully in DLQ
 ```
   use Nirmalsharma\LaravelKafkaPhp\Exceptions\KafkaConsumerException;
   

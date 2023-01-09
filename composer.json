@@ -26,7 +26,8 @@
                 "Nirmalsharma\\LaravelKafkaPhp\\KafkaServiceProvider"
             ],
             "aliases": {
-                "KafkaProducer": "Nirmalsharma\\LaravelKafkaPhp\\Producer\\Services\\KafkaProducer"
+                "KafkaProducer": "Nirmalsharma\\LaravelKafkaPhp\\Producer\\Services\\KafkaProducer",
+                "KafkaConsumer": "Nirmalsharma\\LaravelKafkaPhp\\Consumer\\Services\\KafkaConsumer"
             }
         }
     },
