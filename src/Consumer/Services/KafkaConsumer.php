@@ -9,7 +9,7 @@ namespace Nirmalsharma\LaravelKafkaPhp\Consumer\Services;
 
 use Nirmalsharma\LaravelKafkaPhp\Consumer\Handlers\KafkaConsumerHandler;
 
-abstract class Kafka {
+abstract class KafkaConsumer {
 
     /**
      * Create Consumer function

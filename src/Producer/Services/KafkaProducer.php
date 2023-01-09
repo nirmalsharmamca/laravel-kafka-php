@@ -9,7 +9,7 @@ namespace Nirmalsharma\LaravelKafkaPhp\Producer\Services;
 
 use Nirmalsharma\LaravelKafkaPhp\Producer\Handlers\KafkaProducerHandler;
 
-abstract class Kafka {
+abstract class KafkaProducer {
 
     private static function isKafkaEnabled() {
         return config("kafka.is_enabled");

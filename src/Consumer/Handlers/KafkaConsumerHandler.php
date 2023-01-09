@@ -13,8 +13,8 @@ use RdKafka\Conf;
 use RdKafka\KafkaConsumer;
 use RdKafka\Message;
 use RdKafka\TopicPartition;
-use Nirmalsharma\LaravelKafkaPhp\KafkaException\KafkaException;
-use Nirmalsharma\LaravelKafkaPhp\Producer\Services\Kafka as KafkaProducer;
+use Nirmalsharma\LaravelKafkaPhp\Exceptions\KafkaConsumerException;
+use Nirmalsharma\LaravelKafkaPhp\Producer\Services\KafkaProducer;
 
 class KafkaConsumerHandler {
 
@@ -131,22 +131,25 @@ class KafkaConsumerHandler {
                         break;
                 }
             }
-            catch(KafkaException $e){
-                dump($e->getMessage(), $decoded_message);
-                $this->sendToDlq($e->getMessage(), $decoded_message);
+            catch(KafkaConsumerException $e){
+                dump($e->getMessage(), $message);
+                $this->sendToDlq($e->getMessage(), $message);
             }
             catch(Exception $e){
-                Log::debug("CriticalError", [$e->getMessage()]);
+                dump($e->getMessage(), $message);
+                $this->sendToDlq($e->getMessage(), $message);
             }
         }
     }
 
-    public function sendToDlq($error_message, $original_message){
-        $topic = 'loan-service-dlq';
-        $event_body = $original_message['data'];
-        $event_key = $original_message['key'];
-        $headers = $original_message['headers'];
-        $headers['Error-Reason'] = $error_message;
-        KafkaProducer::push($topic, $event_body, $event_key, $headers);
+    public function sendToDlq($error_message, $kafka_message){
+        $dlq_topic = config('kafka.dlq_topic');
+        if(!empty($dlq_topic)){
+            $event_body = json_decode($kafka_message->payload, true);
+            $event_key = $kafka_message->key;
+            $headers = $kafka_message->headers;
+            $headers['Error-Reason'] = $error_message;
+            KafkaProducer::push($dlq_topic, $event_body, $event_key, $headers);
+        }
     }
 }

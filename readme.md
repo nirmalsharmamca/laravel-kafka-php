@@ -1,9 +1,9 @@
-## A Lightweight Kafka Producer Warpper for Laravel 6+ and PHP 7.3+
+## A Lightweight Kafka Warpper for Laravel 6+ and PHP 7.3+
 
-Install Kafka Producer Warpper
+Install Kafka Warpper
 
 ```bash
-  composer require nirmalsharma/laravel-kafka-producer
+  composer require nirmalsharma/laravel-kafka-php
 ```
 
 
@@ -31,6 +31,93 @@ $headers = [
 Kafka::push($topic, $data, $key, $headers);
 
 ```
+
+## Use Kafka in code.
+
+Sample code for console
+
+```bash
+namespace App\Console\Commands;
+
+use App\Handlers\TestHandler;
+use Illuminate\Console\Command;
+use KafkaConsumer;
+
+class TestTopicConsumer extends Command
+{
+    protected $signature = 'kafka:test-consume {--partition=} {--consumer-group=} {--topic=} {--dlq-topic=}';
+
+    protected $description = 'Kafka consumer!!';
+
+    public function handle(): void
+    {
+      KafkaConsumer::createConsumer(new TestHandler);
+    }
+
+    public function setKafkaConfig(){ 
+      $partition = $this->option('partition');
+      if( $partition != null){
+          config([
+              "kafka.partition" => $partition
+          ]);
+      }
+
+      $consumer_group_id = $this->option('consumer-group');
+      if( !empty($consumer_group_id)){
+          config([
+              "kafka.consumer_group_id" => $consumer_group_id
+          ]);
+      }
+
+      $topic = $this->option('topic');
+      if( !empty($topic)){
+          config([
+              "kafka.topic" => $topic
+          ]);
+      }
+
+      $dlq_topic = $this->option('dlq-topic');
+      if( !empty($dlq_topic)){
+          config([
+              "kafka.dlq_topic" => $dlq_topic
+          ]);
+      }        
+    }
+}
+
+TestHandler.php
+-----------------
+
+namespace App\Handlers;
+
+use Illuminate\Support\Facades\Log;
+
+class TestHandler
+{
+  public function __invoke( $message)
+  {   
+    dump([ 
+      "partition" => $message['raw']->partition, 
+      "key" => $message['key'] 
+    ]);
+  }
+}
+
+```
+
+## To start listening messages by run following command: 
+
+```
+  php artisan kafka:test-consume --consumer-group=test-local --topic=demo-topic --dlq-topic=demo-dlq
+```
+
+## You can check handler log message in "storage/logs/laravel.log" file or run the following command in your terminal:
+```
+  use Nirmalsharma\LaravelKafkaPhp\Exceptions\KafkaConsumerException;
+  
+  throw new KafkaConsumerException('Not valid.');
+```
+
 ## Environment Variables
 
 To run this, you will need to add the following environment variables to your .env file
@@ -43,6 +130,12 @@ KAFKA_DEBUG=                  // Default: false
 KAFKA_SSL_PROTOCOL=           // Default: plaintext
 KAFKA_COMPRESSION_TYPE=       // Default: none
 KAFKA_IDEMPOTENCE=            // Default: false
+KAFKA_CONSUMER_GROUP_ID=      
+KAFKA_OFFSET_RESET=           // Default: latest
+KAFKA_AUTO_COMMIT=            // Default: true
+KAFKA_DEBUG=false
+KAFKA_DLQ_TOPIC=
+KAFKA_TOPIC=
 ```
 
 
