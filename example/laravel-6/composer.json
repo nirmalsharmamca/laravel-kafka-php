@@ -10,7 +10,7 @@
     "repositories": [        
         {
             "type": "path",
-            "url": "/home/kadamtech-lap30/Projects/nirmal/laravel_kafka_php"
+            "url": "../../."
         }
     ],
     "require": {
