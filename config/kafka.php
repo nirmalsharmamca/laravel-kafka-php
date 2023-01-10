@@ -31,7 +31,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Kafka SSL Protocol {PLAINTEXT, SSL, SASL_PLAINTEXT, SASL_SSL}
+    | Kafka SSL Protocol {plaintext, ssl, sasl_plaintext, sasl_ssl}
     |--------------------------------------------------------------------------
     |
     */
@@ -40,7 +40,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Kafka Compression Type {Gzip, Snappy, Lz4, Zstd}, default= Snappy
+    | Kafka Compression Type {none, gzip, snappy, lz4, zstd}, default= snappy
     |--------------------------------------------------------------------------
     |
     */
@@ -67,7 +67,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Kafka offset reset {earliest, latest, none}, default=latest
+    | Kafka offset reset {smallest, earliest, beginning, largest, latest, end, error}, default=latest
     |--------------------------------------------------------------------------
     |
     */

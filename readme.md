@@ -1,6 +1,6 @@
-## A Lightweight Kafka Warpper for Laravel 6+ and PHP 7.3+
+## A Lightweight Kafka wrapper for Laravel 6+ and PHP 7.3+
 
-Install Kafka Warpper
+Install Kafka wrapper
 
 ```bash
   composer require nirmalsharma/laravel-kafka-php
@@ -8,7 +8,7 @@ Install Kafka Warpper
 
 
 ## Examples
-[Laravel 6](examples/laravel-6-example)
+[Laravel 6](examples/laravel-6)
 
 
 ## Use Kafka producer in code.
@@ -28,13 +28,13 @@ $headers = [
     "ContentType" => "application/json",
     "Timezone" => "GMT +05:30"
 ]; // Optional
-Kafka::push($topic, $data, $key, $headers);
+KafkaProducer::push($topic, $data, $key, $headers);
 
 ```
 
 ## Use Kafka consumer in code.
 
-Sample code for console
+KafkaConsumer code for console
 
 ```bash
 namespace App\Console\Commands;
@@ -111,7 +111,7 @@ class TestHandler
   php artisan kafka:test-consume --consumer-group=test-local --topic=demo-topic --dlq-topic=demo-dlq
 ```
 
-## You can use KafkaConsumerException during business logic or in handler to send message forcefully in DLQ
+## You can use KafkaConsumerException for business logic or consumer handler logic to send message forcefully in DLQ
 ```
   use Nirmalsharma\LaravelKafkaPhp\Exceptions\KafkaConsumerException;
   
@@ -154,4 +154,4 @@ KAFKA_TOPIC=
 ## Features
 
 - Light weight kakfa wrapper
-- Easy to use event produce in code.
+- Easy to produce kafka event and consume in php.
