@@ -12,10 +12,10 @@ class TestTopicConsumer extends Command
 {
     /**
      * command example:
-     * php artisan kafka:test-consume --consumer-group=test-local --topic=test --dlq-topic=test-dlq
+     * php artisan kafka:test-consume --consumer-group=test-local --topic=test --dlq=test-dlq
      *  
      */
-    protected $signature = 'kafka:test-consume {--partition=} {--consumer-group=} {--topic=} {--dlq-topic=}';
+    protected $signature = 'kafka:test-consume {--partition=} {--consumer-group=} {--topic=} {--dlq=}';
 
     protected $description = 'Command description';
 
@@ -47,7 +47,7 @@ class TestTopicConsumer extends Command
             ]);
         }
 
-        $dlq_topic = $this->option('dlq-topic');
+        $dlq_topic = $this->option('dlq');
         if( !empty($dlq_topic)){
             config([
                 "kafka.dlq_topic" => $dlq_topic
